@@ -3,196 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Compare estimated MongoDB Atlas dedicated cluster costs and resources." />
   <title>MongoDB Atlas Multi-Cluster Calculator (M30–M300)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
-      --green: #00684a;
-      --green-light: #e3fcf7;
-      --accent-a: #00684a;
-      --accent-b: #2563eb;
-      --warn: #b45309;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 24px;
-      line-height: 1.5;
-    }
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: grid;
-      gap: 20px;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    header p {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-    }
-
-    .card-header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .card-header h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .btn-group button {
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--text);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .btn-group button.active {
-      background: var(--green);
-      color: #fff;
-      border-color: var(--green);
-    }
-
-    .chart-wrap {
-      position: relative;
-      height: 320px;
-      width: 100%;
-    }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .config-box {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      background: #fcfcfd;
-    }
-
-    .config-box.a { border-top: 4px solid var(--accent-a); }
-    .config-box.b { border-top: 4px solid var(--accent-b); }
-
-    .config-title {
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .field {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
-
-    .field select,
-    .field input[type="range"] {
-      width: 160px;
-    }
-
-    .field select {
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-size: 0.9rem;
-    }
-
-    .delta-banner {
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: var(--green-light);
-      color: #064e3b;
-      font-size: 0.95rem;
-      font-weight: 500;
-      margin-bottom: 20px;
-    }
-
-    .summary-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-    }
-
-    .summary-table th,
-    .summary-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      text-align: right;
-    }
-
-    .summary-table th:first-child,
-    .summary-table td:first-child {
-      text-align: left;
-      font-weight: 600;
-    }
-
-    .summary-table th {
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .tag-a { color: var(--accent-a); font-weight: 700; }
-    .tag-b { color: var(--accent-b); font-weight: 700; }
-    .pos { color: #b91c1c; font-weight: 600; }
-    .neg { color: #047857; font-weight: 600; }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <header>
       <h1>MongoDB Atlas Tier & Multi-Cluster Calculator</h1>
-      <p>AWS us-east-1 dedicated replica set baselines (M30–M300, excluding extra storage, backups, and data transfer)</p>
+      <p>Estimated AWS us-east-1 dedicated replica set baselines (M30–M300). Verify current Atlas pricing before making purchasing decisions.</p>
     </header>
 
     <!-- Resource vs Price Chart -->
@@ -200,14 +20,14 @@
       <div class="card-header">
         <h2>Monthly Cost vs. Cluster Resources</h2>
         <div class="btn-group" id="metricButtons">
-          <button class="active" data-metric="ramGB">RAM (GB)</button>
-          <button data-metric="vcpu">vCPUs</button>
-          <button data-metric="maxStdStorageTB">Max Std Storage (TB)</button>
-          <button data-metric="maxExtStorageTB">Max Ext Storage (TB)</button>
+          <button type="button" class="active" data-metric="ramGB">RAM (GB)</button>
+          <button type="button" data-metric="vcpu">vCPUs</button>
+          <button type="button" data-metric="maxStdStorageTB">Max Std Storage (TB)</button>
+          <button type="button" data-metric="maxExtStorageTB">Max Ext Storage (TB)</button>
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="tierChart"></canvas>
+        <canvas id="tierChart" role="img" aria-label="Monthly cost compared with selected cluster resources"></canvas>
       </div>
     </section>
 
@@ -249,222 +69,28 @@
         </div>
       </div>
 
-      <div class="delta-banner" id="deltaBanner"></div>
+      <div class="delta-banner" id="deltaBanner" role="status" aria-live="polite"></div>
 
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th class="tag-a" id="thA">Config A</th>
-            <th class="tag-b" id="thB">Config B</th>
-            <th>Difference (A vs B)</th>
-          </tr>
-        </thead>
-        <tbody id="summaryBody"></tbody>
-      </table>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th class="tag-a" id="thA">Config A</th>
+              <th class="tag-b" id="thB">Config B</th>
+              <th>Difference (A vs B)</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
 
-      <div class="chart-wrap" style="height: 260px;">
-        <canvas id="compareChart"></canvas>
+      <div class="chart-wrap chart-wrap--compact">
+        <canvas id="compareChart" role="img" aria-label="Resource comparison between configurations A and B"></canvas>
       </div>
     </section>
-  </div>
+  </main>
 
-  <script>
-    // Published AWS us-east-1 dedicated tier specs & pricing
-    const TIERS = [
-      { tier: "M30",  ramGB: 8,   vcpu: 2,  defaultStorageGB: 40,   maxStdStorageTB: 0.5, maxExtStorageTB: 0.5, hourlyUSD: 0.54,  monthlyUSD: 387.62 },
-      { tier: "M40",  ramGB: 16,  vcpu: 4,  defaultStorageGB: 80,   maxStdStorageTB: 1,   maxExtStorageTB: 4,   hourlyUSD: 1.04,  monthlyUSD: 746.79 },
-      { tier: "M50",  ramGB: 32,  vcpu: 8,  defaultStorageGB: 160,  maxStdStorageTB: 4,   maxExtStorageTB: 8,   hourlyUSD: 2.00,  monthlyUSD: 1436.64 },
-      { tier: "M60",  ramGB: 64,  vcpu: 16, defaultStorageGB: 320,  maxStdStorageTB: 4,   maxExtStorageTB: 8,   hourlyUSD: 3.95,  monthlyUSD: 2847.00 },
-      { tier: "M80",  ramGB: 128, vcpu: 32, defaultStorageGB: 750,  maxStdStorageTB: 4,   maxExtStorageTB: 14,  hourlyUSD: 7.30,  monthlyUSD: 5258.19 },
-      { tier: "M140", ramGB: 192, vcpu: 48, defaultStorageGB: 1024, maxStdStorageTB: 4,   maxExtStorageTB: 14,  hourlyUSD: 10.99, monthlyUSD: 7914.65 },
-      { tier: "M200", ramGB: 256, vcpu: 64, defaultStorageGB: 1536, maxStdStorageTB: 4,   maxExtStorageTB: 14,  hourlyUSD: 14.59, monthlyUSD: 10507.62 },
-      { tier: "M300", ramGB: 384, vcpu: 96, defaultStorageGB: 2048, maxStdStorageTB: 4,   maxExtStorageTB: 14,  hourlyUSD: 21.85, monthlyUSD: 15735.15 }
-    ];
-
-    const METRIC_LABELS = {
-      ramGB: "RAM (GB)",
-      vcpu: "vCPUs",
-      maxStdStorageTB: "Max Standard Storage (TB)",
-      maxExtStorageTB: "Max Extended Storage (TB)"
-    };
-
-    const state = {
-      metric: "ramGB",
-      tierA: "M60",
-      countA: 1,
-      tierB: "M40",
-      countB: 4
-    };
-
-    const tierMap = Object.fromEntries(TIERS.map(t => [t.tier, t]));
-
-    // Populate dropdowns
-    const selA = document.getElementById("tierA");
-    const selB = document.getElementById("tierB");
-    TIERS.forEach(t => {
-      const label = `${t.tier} (${t.ramGB} GB / ${t.vcpu} vCPU)`;
-      selA.add(new Option(label, t.tier));
-      selB.add(new Option(label, t.tier));
-    });
-    selA.value = state.tierA;
-    selB.value = state.tierB;
-
-    // Formatting helpers
-    const fmtUSD = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const fmtNum = (n, suffix = "") => `${Number(n.toFixed(2)).toLocaleString("en-US")}${suffix}`;
-
-    function calcTotals(tierName, count) {
-      const t = tierMap[tierName];
-      return {
-        monthly: t.monthlyUSD * count,
-        hourly: t.hourlyUSD * count,
-        ram: t.ramGB * count,
-        vcpu: t.vcpu * count,
-        stdTB: t.maxStdStorageTB * count,
-        extTB: t.maxExtStorageTB * count
-      };
-    }
-
-    // Initialize Top Chart (Scatter: Resource vs Monthly Cost)
-    const tierChart = new Chart(document.getElementById("tierChart"), {
-      type: "scatter",
-      data: { datasets: [] },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: ctx => {
-                const t = ctx.raw.meta;
-                return [
-                  `${t.tier} — ${fmtUSD(t.monthlyUSD)}/mo (${fmtUSD(t.hourlyUSD)}/hr)`,
-                  `RAM: ${t.ramGB} GB | vCPUs: ${t.vcpu}`,
-                  `Storage: ${t.defaultStorageGB} GB def | ${t.maxStdStorageTB} TB std | ${t.maxExtStorageTB} TB ext`
-                ];
-              }
-            }
-          }
-        },
-        scales: {
-          x: { title: { display: true, text: METRIC_LABELS[state.metric] } },
-          y: {
-            title: { display: true, text: "Monthly Cost (USD)" },
-            ticks: { callback: v => "$" + v.toLocaleString() }
-          }
-        }
-      }
-    });
-
-    // Initialize Bottom Chart (Grouped Bar Comparison)
-    const compareChart = new Chart(document.getElementById("compareChart"), {
-      type: "bar",
-      data: {
-        labels: ["Monthly Cost ($100s)", "Total RAM (GB)", "Total vCPUs", "Max Std Storage (TB)", "Max Ext Storage (TB)"],
-        datasets: [
-          { label: "Config A", data: [], backgroundColor: "#00684a", borderRadius: 6 },
-          { label: "Config B", data: [], backgroundColor: "#2563eb", borderRadius: 6 }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: "top" }
-        },
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
-
-    function render() {
-      const a = calcTotals(state.tierA, state.countA);
-      const b = calcTotals(state.tierB, state.countB);
-      const nameA = `${state.countA}× ${state.tierA}`;
-      const nameB = `${state.countB}× ${state.tierB}`;
-
-      // Labels
-      document.getElementById("labelA").textContent = nameA;
-      document.getElementById("labelB").textContent = nameB;
-      document.getElementById("countAVal").textContent = state.countA;
-      document.getElementById("countBVal").textContent = state.countB;
-      document.getElementById("thA").textContent = nameA;
-      document.getElementById("thB").textContent = nameB;
-
-      // Cost delta banner
-      const costDiff = a.monthly - b.monthly;
-      const pct = ((costDiff / b.monthly) * 100).toFixed(1);
-      const direction = costDiff < 0 ? "cheaper" : costDiff > 0 ? "more expensive" : "the exact same cost";
-      document.getElementById("deltaBanner").innerHTML =
-        costDiff === 0
-          ? `<strong>${nameA}</strong> and <strong>${nameB}</strong> cost the same (${fmtUSD(a.monthly)}/mo).`
-          : `<strong>${nameA}</strong> is <strong>${Math.abs(pct)}% ${direction}</strong> than <strong>${nameB}</strong> (${costDiff > 0 ? "+" : "-"}${fmtUSD(Math.abs(costDiff))}/mo).`;
-
-      // Summary table
-      const rows = [
-        ["Monthly Cost", fmtUSD(a.monthly), fmtUSD(b.monthly), costDiff, v => (v > 0 ? "+" : "-") + fmtUSD(Math.abs(v)), true],
-        ["Hourly Cost", fmtUSD(a.hourly), fmtUSD(b.hourly), a.hourly - b.hourly, v => (v > 0 ? "+" : "-") + fmtUSD(Math.abs(v)), true],
-        ["Total RAM", fmtNum(a.ram, " GB"), fmtNum(b.ram, " GB"), a.ram - b.ram, v => (v > 0 ? "+" : "") + fmtNum(v, " GB"), false],
-        ["Total vCPUs", fmtNum(a.vcpu), fmtNum(b.vcpu), a.vcpu - b.vcpu, v => (v > 0 ? "+" : "") + fmtNum(v), false],
-        ["Max Standard Storage", fmtNum(a.stdTB, " TB"), fmtNum(b.stdTB, " TB"), a.stdTB - b.stdTB, v => (v > 0 ? "+" : "") + fmtNum(v, " TB"), false],
-        ["Max Extended Storage", fmtNum(a.extTB, " TB"), fmtNum(b.extTB, " TB"), a.extTB - b.extTB, v => (v > 0 ? "+" : "") + fmtNum(v, " TB"), false]
-      ];
-
-      document.getElementById("summaryBody").innerHTML = rows.map(([label, valA, valB, diff, fmtDiff, isCost]) => {
-        let cls = "";
-        if (diff !== 0) cls = isCost ? (diff > 0 ? "pos" : "neg") : (diff > 0 ? "neg" : "pos");
-        return `
-          <tr>
-            <td>${label}</td>
-            <td>${valA}</td>
-            <td>${valB}</td>
-            <td class="${cls}">${diff === 0 ? "Same" : fmtDiff(diff)}</td>
-          </tr>`;
-      }).join("");
-
-      // Update Top Chart
-      tierChart.data.datasets = [{
-        data: TIERS.map(t => ({ x: t[state.metric], y: t.monthlyUSD, meta: t })),
-        pointRadius: TIERS.map(t => (t.tier === state.tierA || t.tier === state.tierB) ? 9 : 6),
-        pointBackgroundColor: TIERS.map(t => {
-          if (t.tier === state.tierA && t.tier === state.tierB) return "#7c3aed";
-          if (t.tier === state.tierA) return "#00684a";
-          if (t.tier === state.tierB) return "#2563eb";
-          return "#94a3b8";
-        }),
-        showLine: true,
-        borderColor: "#cbd5e1",
-        borderWidth: 2
-      }];
-      tierChart.options.scales.x.title.text = METRIC_LABELS[state.metric];
-      tierChart.update();
-
-      // Update Bottom Chart
-      compareChart.data.datasets[0].label = nameA;
-      compareChart.data.datasets[1].label = nameB;
-      compareChart.data.datasets[0].data = [+(a.monthly / 100).toFixed(2), a.ram, a.vcpu, a.stdTB, a.extTB];
-      compareChart.data.datasets[1].data = [+(b.monthly / 100).toFixed(2), b.ram, b.vcpu, b.stdTB, b.extTB];
-      compareChart.update();
-    }
-
-    // Event listeners
-    document.getElementById("metricButtons").addEventListener("click", e => {
-      if (e.target.tagName !== "BUTTON") return;
-      document.querySelectorAll("#metricButtons button").forEach(b => b.classList.remove("active"));
-      e.target.classList.add("active");
-      state.metric = e.target.dataset.metric;
-      render();
-    });
-
-    selA.addEventListener("change", e => { state.tierA = e.target.value; render(); });
-    selB.addEventListener("change", e => { state.tierB = e.target.value; render(); });
-    document.getElementById("countA").addEventListener("input", e => { state.countA = +e.target.value; render(); });
-    document.getElementById("countB").addEventListener("input", e => { state.countB = +e.target.value; render(); });
-
-    render();
-  </script>
+  <script src="assets/app.js"></script>
 </body>
 </html>
