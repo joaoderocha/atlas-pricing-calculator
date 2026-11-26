@@ -1,6 +1,6 @@
 # MongoDB Atlas Pricing Calculator
 
-A small, dependency-free static site for comparing estimated MongoDB Atlas dedicated cluster costs and resources.
+A small, dependency-free static site for comparing estimated MongoDB Atlas dedicated cluster costs and resources across AWS, Google Cloud, and Azure.
 
 **Live site:** https://joaoderocha.github.io/atlas-pricing-calculator/
 
@@ -12,6 +12,8 @@ A small, dependency-free static site for comparing estimated MongoDB Atlas dedic
 ├── assets/
 │   ├── app.js          # Pricing data, calculations, and charts
 │   └── styles.css      # Site styles and responsive layout
+├── docs/
+│   └── pricing-sources.md # Official pricing research and caveats
 └── README.md
 ```
 
@@ -29,9 +31,11 @@ Then visit http://localhost:8000.
 
 ## Updating pricing
 
-Tier specifications and prices are maintained in the `TIERS` array near the top of `assets/app.js`. Update those values when the underlying Atlas pricing changes.
+Provider metadata, tier specifications, and prices are maintained in the `PROVIDERS` object near the top of `assets/app.js`. The supporting official sources, retrieval method, effective date, and known limitations are recorded in `docs/pricing-sources.md`.
 
-The calculator provides baseline estimates for AWS `us-east-1`. It excludes additional storage, backups, data transfer, taxes, discounts, and other usage-based charges. Verify current prices before using the estimates for purchasing decisions.
+The current snapshot uses the Atlas calculator's default baseline regions: AWS `us-east-1`, Google Cloud `us-central1`, and Azure `eastus2`. It models one standard three-node replica set with default storage and excludes backups, network costs, taxes, discounts, and other usage-based charges. Verify current prices before using the estimates for purchasing decisions.
+
+Tier availability and hardware differ by provider. The UI only offers combinations that were available in the official Atlas calculator when the pricing snapshot was retrieved.
 
 ## Deployment
 

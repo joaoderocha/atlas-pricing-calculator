@@ -38,6 +38,15 @@ header p {
   font-size: 0.9rem;
 }
 
+header .pricing-meta {
+  margin-top: 4px;
+  font-size: 0.8rem;
+}
+
+.pricing-meta a {
+  color: var(--green);
+}
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -127,12 +136,12 @@ header p {
   font-size: 0.9rem;
 }
 
-.field select,
 .field input[type="range"] {
   width: 160px;
 }
 
 .field select {
+  width: min(220px, 65%);
   padding: 6px 8px;
   border-radius: 6px;
   border: 1px solid var(--border);
@@ -201,7 +210,6 @@ header p {
     grid-template-columns: 1fr;
   }
 
-  .field select,
   .field input[type="range"] {
     width: 140px;
   }
